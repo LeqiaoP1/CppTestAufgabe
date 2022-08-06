@@ -16,10 +16,12 @@ To build image (target image as "testaufgabe")
 docker build -t testaufgabe .
 ```
 
-To enter the container interactive for the following steps.
+To enter the container interactive for the following steps
 ```
 docker run -it --mount src="$(pwd)",target=/workspace,type=bind testaufgabe
 ```
+The host folder is mapped to "workspace"
+
 
 ### Compile ("out-of-source")
 
@@ -34,7 +36,7 @@ make -j$(nproc)
 
 Unit tests got compiled by default.
 
-Some very simple .pgm fiels in "test/data" for testing purpose
+Some very simple .pgm files in "/workspace/test/data" for testing purpose
 
 Tests binaries will be prefixed with `UT_`.
 
@@ -44,4 +46,35 @@ cd build/test
 ./UT_PgmAverager
 ```
 The "case1_average.pgm" and "case2_average.pgm" will be generated for manually checking
+
+### Evaluation with real data
+
+from the "/workspace/build",
+```
+make install
+```
+
+The binary executable is then installed as "/workspace/build/bin/testCli"
+
+```
+root@c896d3e3bd27:/workspace/build/bin# ./testCli              
+Usage: testCli -d <directory_path>
+  where <directory_path>	in which input .pgm images and the output average.pgm are located
+  example: testCli -d ./data
+root@c896d3e3bd27:/workspace/build/bin# ./testCli -d ../../data
+process "../../data/2020-08-11--00-01-10-310.pgm"
+process "../../data/2020-08-11--00-01-09-490.pgm"
+process "../../data/2020-08-11--00-01-09-252.pgm"
+process "../../data/2020-08-11--00-01-09-553.pgm"
+process "../../data/2020-08-11--00-01-09-073.pgm"
+process "../../data/2020-08-11--00-01-08-913.pgm"
+process "../../data/2020-08-11--00-01-09-916.pgm"
+process "../../data/2020-08-11--00-01-08-805.pgm"
+process "../../data/2020-08-11--00-01-10-119.pgm"
+process "../../data/2020-08-11--00-01-09-732.pgm"
+../../data/average.pgm is generated. 
+
+```
+
+
 
