@@ -7,7 +7,7 @@
 | CMake (ver.3.11+)  | Building tool                         |
 | ClangFormat        | Code formatter                        |
 | git                | Download googletest                   |
-| build-essential    | C++ compiler with c++17 support       |
+| build-essential    | c++ compiler with c++17 support       |
 | docker             | Containerization                      |
 
 ### Building environment in Docker container (based on "ubuntu:20.04")
@@ -47,7 +47,7 @@ cd build/test
 ```
 The "case1_average.pgm" and "case2_average.pgm" will be generated for manually checking
 
-### Evaluation with real data
+### Evaluation with real .pmg data
 
 from the "/workspace/build",
 ```
@@ -55,6 +55,9 @@ make install
 ```
 
 The binary executable is then installed as "/workspace/build/bin/testCli"
+
+
+The .pgm files from real world are located in "/workspace/data". 
 
 ```
 root@c896d3e3bd27:/workspace/build/bin# ./testCli              
