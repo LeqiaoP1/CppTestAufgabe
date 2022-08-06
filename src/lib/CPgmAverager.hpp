@@ -22,8 +22,10 @@ public:
     void reset();
 
 private:
+    /* "filename" is absolute full path name of the innput .pgm file */
     bool parsePgmFile(const std::string& filename);
 
+    /* "filename" is absolute full path name of the output .pgm file */
     void generatePgmFile(const std::string& filename);
 
     bool m_initialized; // set to true after the first source pgm added successfully

@@ -34,6 +34,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest)
 
+# main source
+add_subdirectory(src) 
 
-add_subdirectory(src)
+ # unit testing
 add_subdirectory(test)

@@ -24,7 +24,7 @@ CPgmAverager::~CPgmAverager()
 void CPgmAverager::addSource(const std::string& inputFilename)
 {
     if (parsePgmFile(inputFilename) == false) {
-        throw std::runtime_error("parse input pgm file " + inputFilename + " failed.");
+        throw std::runtime_error("Parse input pgm file " + inputFilename + " failed");
     }
 
     m_count++;
@@ -34,7 +34,7 @@ void CPgmAverager::produce(const std::string& outputFilename)
 {
     if (m_initialized) {
         generatePgmFile(outputFilename);
-        std::cout << "average.pgm is generated. " << std::endl;
+        std::cout << outputFilename << " is generated. " << std::endl;
     } else {
         throw std::logic_error("Not initialized");
     }
