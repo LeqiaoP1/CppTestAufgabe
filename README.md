@@ -8,6 +8,7 @@
 | ClangFormat        | Code formatter                        |
 | git                | Download googletest                   |
 | build-essential    | g++ compiler with c++17 support       |
+| docker             | containerization                      |
 
 ### Building enviroment in Docker container (based on "ubuntu:20.04")
 To build image (target image as "testaufgabe")
@@ -22,7 +23,7 @@ docker run -it --mount src="$(pwd)",target=/workspace,type=bind testaufgabe
 
 ### Compile ("out-of-source")
 
-Assume that inside the container, for source compiliation:
+Inside the container, for source compiliation:
 ```
 mkdir build && cd build
 cmake ..
