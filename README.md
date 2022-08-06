@@ -15,14 +15,14 @@ To build image (target image as "testaufgabe")
 docker build -t testaufgabe .
 ```
 
-To enter the container and interactive for following steps.
+To enter the container interactive for the following steps.
 ```
 docker run -it --mount src="$(pwd)",target=/workspace,type=bind testaufgabe
 ```
 
 ### Compile ("out-of-source")
 
-To compile:
+Assume that inside the container, for source compiliation:
 ```
 mkdir build && cd build
 cmake ..
