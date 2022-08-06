@@ -9,6 +9,16 @@
 | git                | Download googletest                   |
 | build-essential    | g++ compiler with c++17 support       |
 
+### Building enviroment in Docker container (based on "ubuntu:20.04")
+To build image (target image as "testaufgabe")
+```
+docker build -t testaufgabe .
+```
+
+To enter the container and interactive for following steps.
+```
+docker run -it --mount src="$(pwd)",target=/workspace,type=bind testaufgabe
+```
 
 ### Compile ("out-of-source")
 
