@@ -8,7 +8,7 @@
 | ClangFormat        | Code formatter                        |
 | git                | Download googletest                   |
 | build-essential    | g++ compiler with c++17 support       |
-| docker             | containerization                      |
+| docker             | Containerization                      |
 
 ### Building enviroment in Docker container (based on "ubuntu:20.04")
 To build image (target image as "testaufgabe")
