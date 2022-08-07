@@ -18,12 +18,14 @@ CPgmAverager::CPgmAverager()
 
 CPgmAverager::~CPgmAverager()
 {
-    delete[] m_buffer;
+    if (m_buffer != nullptr) {
+        delete[] m_buffer;
+    }
 }
 
 void CPgmAverager::addSource(const std::string& inputFilename)
 {
-    
+
     if (m_count > MAX_COUNT) {
         std::cerr << "Opps. The capable limit on the max number of .pgm files exceed." << std::endl;
         throw std::runtime_error("Add source failed. Not capable to add new source");
@@ -31,24 +33,27 @@ void CPgmAverager::addSource(const std::string& inputFilename)
 
     using Err = CPgmAverager::ParseErrorStatus;
     switch (parsePgmFile(inputFilename)) {
-        case(Err::bufferInitBadAllocErr):
-            throw std::runtime_error("Parse Pgm failed. Buffer bad alloc by the first source. " + inputFilename);
+    case (Err::bufferInitBadAllocErr):
+        throw std::runtime_error(
+            "Parse Pgm failed. Buffer bad alloc by the first source. " + inputFilename);
 
-        case(Err::pgmFormatNotSupportedErr):
-            throw std::runtime_error("Parse Pgm failed. Format not supported. " + inputFilename);
+    case (Err::pgmFormatNotSupportedErr):
+        throw std::runtime_error("Parse Pgm failed. Format not supported. " + inputFilename);
 
-        case(Err::sourceSizeInconsistErr):
-            throw std::runtime_error("Parse Pgm failed. Size is different in the first source. " + inputFilename);
+    case (Err::sourceSizeInconsistErr):
+        throw std::runtime_error(
+            "Parse Pgm failed. Size is different in the first source. " + inputFilename);
 
-        case(Err::maxGrayValueInconsistErr):
-            throw std::runtime_error("Parse Pgm failed. Max grayvalue is different in the first source. " + inputFilename);
-        
-        case(Err::noErr):
-            m_count++;
-            break;
-        
-        default:
-            throw std::runtime_error("Parse Pgm failed. Unexpected result. " + inputFilename);
+    case (Err::maxGrayValueInconsistErr):
+        throw std::runtime_error(
+            "Parse Pgm failed. Max grayvalue is different in the first source. " + inputFilename);
+
+    case (Err::noErr):
+        m_count++;
+        break;
+
+    default:
+        throw std::runtime_error("Parse Pgm failed. Unexpected result. " + inputFilename);
     }
 }
 
@@ -65,7 +70,10 @@ void CPgmAverager::produce(const std::string& outputFilename)
 void CPgmAverager::reset()
 {
     m_initialized = false;
-    delete[] m_buffer;
+    if (m_buffer != nullptr) {
+        delete[] m_buffer;
+        m_buffer = nullptr;
+    }
 }
 
 CPgmAverager::ParseErrorStatus CPgmAverager::parsePgmFile(const std::string& filename)
@@ -77,7 +85,6 @@ CPgmAverager::ParseErrorStatus CPgmAverager::parsePgmFile(const std::string& fil
     size_t width = 0;
     size_t height = 0;
 
-   
     // first line PGM version
     getline(infile, inputLine);
     if (inputLine.compare("P2") != 0) {
@@ -118,7 +125,8 @@ CPgmAverager::ParseErrorStatus CPgmAverager::parsePgmFile(const std::string& fil
     // std::cout << "maxGrayValue = " << maxGrayValue << std::endl;
     if (m_initialized) {
         if (m_maxGrayValue != maxGrayValue) {
-            std::cerr << "Opps. Input .pgm file has different size than previous .pgm." << std::endl;
+            std::cerr << "Opps. Input .pgm file has different size than previous .pgm."
+                      << std::endl;
             return Err::maxGrayValueInconsistErr;
         }
     } else {
