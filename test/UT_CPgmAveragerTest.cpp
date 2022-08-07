@@ -13,8 +13,49 @@ TEST(UT_PgmAverager, dummy)
     ASSERT_TRUE(res);
 }
 
-// negative test for catching exception if no source .pgm ever added for averaging
-TEST(UT_PgmAverager, produceWithoutAnyPgmSource) 
+// negative test for catching exeception
+TEST(UT_PgmAverager, addPgmSourceFormatUnsupported) 
+{
+    TestAufgabe::CPgmAverager pgmAverager;
+    try {
+        pgmAverager.addSource(std::string{"./data/all0P1.pbm"});
+        FAIL() << "Expected std::runtime_error";
+    } catch(std::runtime_error const &ex) {
+        ASSERT_EQ(ex.what(), std::string("Parse Pgm failed. Format not supported. ./data/all0P1.pbm"));
+    }
+}
+
+
+// negative test for catching exeception
+TEST(UT_PgmAverager, addTwoPgmSourceButDifferentSize) 
+{
+    TestAufgabe::CPgmAverager pgmAverager;
+    try {
+        pgmAverager.addSource(std::string{"./data/a.pgm"});
+        pgmAverager.addSource(std::string{"./data/b.pgm"});
+        FAIL() << "Expected std::runtime_error";
+    } catch(std::runtime_error const &ex) {
+        ASSERT_EQ(ex.what(), std::string("Parse Pgm failed. Size is different in the first source. ./data/b.pgm"));
+    }
+}
+
+
+// negative test for catching exeception
+TEST(UT_PgmAverager, addTwoPgmSourceButDifferentMaxGrayValue) 
+{
+    TestAufgabe::CPgmAverager pgmAverager;
+    try {
+        pgmAverager.addSource(std::string{"./data/a.pgm"});
+        pgmAverager.addSource(std::string{"./data/a2.pgm"});
+        FAIL() << "Expected std::runtime_error";
+    } catch(std::runtime_error const &ex) {
+        ASSERT_EQ(ex.what(), std::string("Parse Pgm failed. Max grayvalue is different in the first source. ./data/a2.pgm"));
+    }
+}
+
+
+// negative test for catching exception
+TEST(UT_PgmAverager, produceWithZeroPgmSource) 
 {
     TestAufgabe::CPgmAverager pgmAverager;
     try {
@@ -22,20 +63,6 @@ TEST(UT_PgmAverager, produceWithoutAnyPgmSource)
         FAIL() << "Expected std::logic_error";
     } catch(std::logic_error const &ex) {
         ASSERT_EQ(ex.what(), std::string("Not initialized"));
-    }
-}
-
-// negative test for catching exeception if different size in pgm files
-TEST(UT_PgmAverager, produceWithTwoPgmSourceButDifferentSize) 
-{
-    TestAufgabe::CPgmAverager pgmAverager;
-    try {
-        pgmAverager.addSource(std::string{"./data/a.pgm"});
-        pgmAverager.addSource(std::string{"./data/b.pgm"});
-        pgmAverager.produce(std::string{"./data/average2.pgm"});
-        FAIL() << "Expected std::logic_error";
-    } catch(std::runtime_error const &ex) {
-        ASSERT_EQ(ex.what(), std::string("Parse input pgm file ./data/b.pgm failed"));
     }
 }
 

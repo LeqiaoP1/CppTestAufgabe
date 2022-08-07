@@ -14,6 +14,7 @@ find_program(FORMAT_PROGRAM NAMES clang-format clang-format-8 clang-format-7 cla
 if(FORMAT_PROGRAM)
     set(FIND_COMMAND "find \
         ${PROJECT_SOURCE_DIR}/src \
+        ${PROJECT_SOURCE_DIR}/test \
         -regex '.*\\.\\(c\\|cc\\|cpp\\|cxx\\|h\\|hh\\|hpp\\|hxx\\)$'")
 
 add_custom_target(codeformat

@@ -22,8 +22,16 @@ public:
     void reset();
 
 private:
+    enum class ParseErrorStatus {
+        noErr,
+        pgmFormatNotSupportedErr,
+        bufferInitBadAllocErr,
+        sourceSizeInconsistErr,
+        maxGrayValueInconsistErr
+    };
+
     /* "filename" is absolute full path name of the innput .pgm file */
-    bool parsePgmFile(const std::string& filename);
+    ParseErrorStatus parsePgmFile(const std::string& filename);
 
     /* "filename" is absolute full path name of the output .pgm file */
     void generatePgmFile(const std::string& filename);

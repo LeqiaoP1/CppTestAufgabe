@@ -23,11 +23,33 @@ CPgmAverager::~CPgmAverager()
 
 void CPgmAverager::addSource(const std::string& inputFilename)
 {
-    if (parsePgmFile(inputFilename) == false) {
-        throw std::runtime_error("Parse input pgm file " + inputFilename + " failed");
+    
+    if (m_count > MAX_COUNT) {
+        std::cerr << "Opps. The capable limit on the max number of .pgm files exceed." << std::endl;
+        throw std::runtime_error("Add source failed. Not capable to add new source");
     }
 
-    m_count++;
+    using Err = CPgmAverager::ParseErrorStatus;
+    switch (parsePgmFile(inputFilename)) {
+        case(Err::bufferInitBadAllocErr):
+            throw std::runtime_error("Parse Pgm failed. Buffer bad alloc by the first source. " + inputFilename);
+
+        case(Err::pgmFormatNotSupportedErr):
+            throw std::runtime_error("Parse Pgm failed. Format not supported. " + inputFilename);
+
+        case(Err::sourceSizeInconsistErr):
+            throw std::runtime_error("Parse Pgm failed. Size is different in the first source. " + inputFilename);
+
+        case(Err::maxGrayValueInconsistErr):
+            throw std::runtime_error("Parse Pgm failed. Max grayvalue is different in the first source. " + inputFilename);
+        
+        case(Err::noErr):
+            m_count++;
+            break;
+        
+        default:
+            throw std::runtime_error("Parse Pgm failed. Unexpected result. " + inputFilename);
+    }
 }
 
 void CPgmAverager::produce(const std::string& outputFilename)
@@ -46,22 +68,24 @@ void CPgmAverager::reset()
     delete[] m_buffer;
 }
 
-bool CPgmAverager::parsePgmFile(const std::string& filename)
+CPgmAverager::ParseErrorStatus CPgmAverager::parsePgmFile(const std::string& filename)
 {
+    using Err = CPgmAverager::ParseErrorStatus;
     std::ifstream infile(filename);
     std::string inputLine{""};
     std::stringstream ss;
     size_t width = 0;
     size_t height = 0;
 
+   
     // first line PGM version
     getline(infile, inputLine);
     if (inputLine.compare("P2") != 0) {
         std::cerr << "Opps. PGM version is NOT P2" << std::endl;
-        return false;
+        return Err::pgmFormatNotSupportedErr;
     }
 
-    // second line: size of image
+    // second line: size of source image
     ss << infile.rdbuf();
     ss >> width >> height;
     // std::cout << numCol << " " << numRow << std::endl;
@@ -69,14 +93,9 @@ bool CPgmAverager::parsePgmFile(const std::string& filename)
         if ((m_numRow != height) || (m_numCol != width)) {
             std::cerr << "Opps. Input .pgm file has different size than previous .pgm."
                       << std::endl;
-            return false;
+            return Err::sourceSizeInconsistErr;
         }
 
-        if (m_count > MAX_COUNT) {
-            std::cerr << "Opps. The capable limit on the max number of .pgm files exceed."
-                      << std::endl;
-            return false;
-        }
     } else { // it is the very first input pgm file
 
         // allocate buffer dynamically
@@ -85,24 +104,29 @@ bool CPgmAverager::parsePgmFile(const std::string& filename)
             std::fill(m_buffer, m_buffer + height * width, 0);
         } catch (std::bad_alloc& ex) {
             std::cerr << ex.what() << std::endl;
-            return false;
+            return Err::bufferInitBadAllocErr;
         }
 
         m_numRow = height;
         m_numCol = width;
-
-        m_initialized = true;
     }
 
     // third line: max value of gray pixel in current pgm file
     u_int16_t maxGrayValue;
     ss >> maxGrayValue;
 
-    // update global max gray value
     // std::cout << "maxGrayValue = " << maxGrayValue << std::endl;
-    m_maxGrayValue = std::max(maxGrayValue, m_maxGrayValue);
+    if (m_initialized) {
+        if (m_maxGrayValue != maxGrayValue) {
+            std::cerr << "Opps. Input .pgm file has different size than previous .pgm." << std::endl;
+            return Err::maxGrayValueInconsistErr;
+        }
+    } else {
+        m_maxGrayValue = maxGrayValue;
+        m_initialized = true; // mark that initialization done
+    }
 
-    // sum up pixel value at every coordinate
+    // sum up pixel value at every coordinate. Result saved to buffer
     for (size_t r = 0; r < m_numRow; ++r) {
         for (size_t c = 0; c < m_numCol; ++c) {
             u_int16_t pixelValue = 0;
@@ -111,7 +135,7 @@ bool CPgmAverager::parsePgmFile(const std::string& filename)
         }
     }
 
-    return true;
+    return Err::noErr;
 }
 
 void CPgmAverager::generatePgmFile(const std::string& filename)
