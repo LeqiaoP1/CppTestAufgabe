@@ -62,10 +62,10 @@ current path is: "/workspace/build/test"
 Opps. PGM version is NOT P2
 [       OK ] UT_PgmAverager.addPgmSourceFormatUnsupported (0 ms)
 [ RUN      ] UT_PgmAverager.addTwoPgmSourceButDifferentSize
-Opps. Input .pgm file has different size than previous .pgm.
+Opps. Input .pgm file has different size than the first .pgm.
 [       OK ] UT_PgmAverager.addTwoPgmSourceButDifferentSize (0 ms)
 [ RUN      ] UT_PgmAverager.addTwoPgmSourceButDifferentMaxGrayValue
-Opps. Input .pgm file has different size than previous .pgm.
+Opps. Input .pgm file has different max grayvalue than the first .pgm.
 [       OK ] UT_PgmAverager.addTwoPgmSourceButDifferentMaxGrayValue (0 ms)
 [ RUN      ] UT_PgmAverager.produceWithoutPgmSource
 [       OK ] UT_PgmAverager.produceWithoutPgmSource (0 ms)
@@ -76,7 +76,7 @@ Opps. Input .pgm file has different size than previous .pgm.
 ./data/case2_average.pgm is generated. 
 [       OK ] UT_PgmAverager.produceWithTwoPgmSource (0 ms)
 [ RUN      ] UT_PgmAverager.produceAfterAddSourceException
-Opps. Input .pgm file has different size than previous .pgm.
+Opps. Input .pgm file has different size than the first .pgm.
 ./data/case3_average.pgm is generated. 
 [       OK ] UT_PgmAverager.produceAfterAddSourceException (0 ms)
 [ RUN      ] UT_PgmAverager.produceAfterReset
