@@ -45,7 +45,50 @@ To run
 cd build/test
 ./UT_PgmAverager
 ```
-The "case1_average.pgm" and "case2_average.pgm" will be generated for manually checking
+
+The "case1_average.pgm", "case2_average.pgm" and "case3_average.pgm" will be generated for manually checking
+
+It may look like this.
+```
+root@d3362da700ec:/workspace/build/test# ./UT_PgmAverager 
+Running main() from /workspace/build/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 9 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 9 tests from UT_PgmAverager
+[ RUN      ] UT_PgmAverager.dummy
+current path is: "/workspace/build/test"
+[       OK ] UT_PgmAverager.dummy (0 ms)
+[ RUN      ] UT_PgmAverager.addPgmSourceFormatUnsupported
+Opps. PGM version is NOT P2
+[       OK ] UT_PgmAverager.addPgmSourceFormatUnsupported (0 ms)
+[ RUN      ] UT_PgmAverager.addTwoPgmSourceButDifferentSize
+Opps. Input .pgm file has different size than previous .pgm.
+[       OK ] UT_PgmAverager.addTwoPgmSourceButDifferentSize (0 ms)
+[ RUN      ] UT_PgmAverager.addTwoPgmSourceButDifferentMaxGrayValue
+Opps. Input .pgm file has different size than previous .pgm.
+[       OK ] UT_PgmAverager.addTwoPgmSourceButDifferentMaxGrayValue (0 ms)
+[ RUN      ] UT_PgmAverager.produceWithoutPgmSource
+[       OK ] UT_PgmAverager.produceWithoutPgmSource (0 ms)
+[ RUN      ] UT_PgmAverager.produceWithOnePgmSource
+./data/case1_average.pgm is generated. 
+[       OK ] UT_PgmAverager.produceWithOnePgmSource (0 ms)
+[ RUN      ] UT_PgmAverager.produceWithTwoPgmSource
+./data/case2_average.pgm is generated. 
+[       OK ] UT_PgmAverager.produceWithTwoPgmSource (0 ms)
+[ RUN      ] UT_PgmAverager.produceAfterAddSourceException
+Opps. Input .pgm file has different size than previous .pgm.
+./data/case3_average.pgm is generated. 
+[       OK ] UT_PgmAverager.produceAfterAddSourceException (0 ms)
+[ RUN      ] UT_PgmAverager.produceAfterReset
+[       OK ] UT_PgmAverager.produceAfterReset (0 ms)
+[----------] 9 tests from UT_PgmAverager (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 9 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 9 tests.
+```
+
+
 
 ### Evaluation with real .pmg data
 
