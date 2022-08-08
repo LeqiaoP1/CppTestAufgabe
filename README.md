@@ -40,9 +40,9 @@ Some very simple .pgm files in "/workspace/test/data" for testing purpose
 
 Tests binaries will be prefixed with `UT_`.
 
-To run
+from the container's "/workspace/build"
 ```
-cd build/test
+cd test
 ./UT_PgmAverager
 ```
 
@@ -92,9 +92,10 @@ Opps. Input .pgm file has different size than previous .pgm.
 
 ### Evaluation with real .pmg data
 
-from the "/workspace/build",
+from the container's "/workspace/build"
 ```
 make install
+cd bin
 ```
 
 The binary executable is then installed as "/workspace/build/bin/testCli"
@@ -102,6 +103,7 @@ The binary executable is then installed as "/workspace/build/bin/testCli"
 
 The .pgm files from real world are located in "/workspace/data". 
 
+It may look like this.
 ```
 root@c896d3e3bd27:/workspace/build/bin# ./testCli              
 Usage: testCli -d <directory_path>
