@@ -98,7 +98,7 @@ CPgmAverager::ParseErrorStatus CPgmAverager::parsePgmFile(const std::string& fil
     // std::cout << numCol << " " << numRow << std::endl;
     if (m_initialized) {
         if ((m_numRow != height) || (m_numCol != width)) {
-            std::cerr << "Opps. Input .pgm file has different size than previous .pgm."
+            std::cerr << "Opps. Input .pgm file has different size than the first .pgm."
                       << std::endl;
             return Err::sourceSizeInconsistErr;
         }
@@ -125,7 +125,7 @@ CPgmAverager::ParseErrorStatus CPgmAverager::parsePgmFile(const std::string& fil
     // std::cout << "maxGrayValue = " << maxGrayValue << std::endl;
     if (m_initialized) {
         if (m_maxGrayValue != maxGrayValue) {
-            std::cerr << "Opps. Input .pgm file has different size than previous .pgm."
+            std::cerr << "Opps. Input .pgm file has different max grayvalue than the first .pgm."
                       << std::endl;
             return Err::maxGrayValueInconsistErr;
         }
